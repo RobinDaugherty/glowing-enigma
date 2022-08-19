@@ -1,32 +1,32 @@
 import random, time, os
 from colorama import Fore, Style
 
-#initializing variables
+# making style function
 
-choice = "yes"
-GuessCount = 0
-played = 0
-guess = 0
-highGuess = []
-lowGuess = []
-cols=os.get_terminal_size().columns
+def styleString(style, str):
+    print(style + str + Style.RESET_ALL)
 
-#guide
+# initializing variables
+
+choice = "yes"; GuessCount = 0; played = 0; guess = 0
+minRange= 0; maxRange = 1; highGuess = []; lowGuess = []; cols=os.get_terminal_size().columns
+
+# guide
 
 while choice == "yes":
     print("\nWelcome to Find The Number, the game where you guess the number in a range!")
     print("After each guess, you are told whether it was higher or lower than the target number.")
     print("You can choose from three pre-made games or customize.")
     print("You can choose between easy mode, where you can see your previous guesses, or hard, where you can't.")
-    print(Fore.BLUE + Style.BRIGHT + "="*cols + Style.RESET_ALL)
+    styleString(Fore.BLUE + Style.BRIGHT, "="*cols)
     choice1 = input("Say yes if you want to play the game: ")
 
-    #inputting settings
+    # inputting settings
 
     if "yes" in choice1.lower():
         choice = "yes"
         played = 1
-        print(Fore.BLUE + Style.BRIGHT + "="*cols + Style.RESET_ALL)
+        styleString(Fore.BLUE + Style.BRIGHT, "="*cols)
         gameMode = input("Enter" + Fore.BLUE + " easy " + Style.RESET_ALL + "or" + Fore.BLUE + " hard " + Style.RESET_ALL + "to choose gamemode: ")
         if "hard" in gameMode.lower():
             gameMode = "hard"
@@ -43,32 +43,36 @@ while choice == "yes":
             else:
                 minRange = -1000; maxRange = 1000; guesses = 11
         else:
-            print(Fore.BLUE + Style.BRIGHT + "="*cols + Style.RESET_ALL)
+            styleString(Fore.BLUE + Style.BRIGHT, "="*cols)
             minRange = int(input("Enter the minimum value of the guessing range, numerals only: "))
             maxRange = int(input("Enter the maximum value of the guessing range, numerals only: "))
             guesses = int(input("Enter how many guesses you will have, numerals only: "))
+            if guesses <=0:
+                break
+            if minRange == maxRange:
+                break
         target = random.randint(minRange, maxRange)
 
         # while loop to reroll target if it hits numbers with special responses
 
         while target == 666 or target == 616:
             target = random.randint(minRange, maxRange)
-        print(Fore.BLUE + Style.BRIGHT + "="*cols + Style.RESET_ALL)
+        styleString(Fore.BLUE + Style.BRIGHT, "="*cols)
         if (maxRange - minRange) > 10000:
             print("Go big or go home!")
         if guesses >= 20 and (maxRange - minRange) <= 2000:
             print("You like things easy, huh?")
 
-        #game
+        # game
 
         for i in range(1,guesses+1):
             GuessCount = GuessCount + 1
             if i == 1 and not "yes" in choice2.lower():
-                print(Fore.YELLOW + "You've entered a range of",minRange,"to",str(maxRange) + "!" + Style.RESET_ALL)
+                styleString(Fore.YELLOW, "You've entered a range of",minRange,"to",str(maxRange) + "!")
             elif i == 1 and "yes" in choice2.lower():
-                print(Fore.YELLOW + "You've chosen a range of",minRange,"to",str(maxRange) + "!" + Style.RESET_ALL)
+                styleString(Fore.YELLOW + "You've chosen a range of",minRange,"to",str(maxRange) + "!")
             else:
-                print(Fore.YELLOW + "The range is",minRange,"to",str(maxRange) + "!" + Style.RESET_ALL)
+                styleString(Fore.YELLOW + "The range is",minRange,"to",str(maxRange) + "!")
             if i > 1 and gameMode == "easy":
                 sorted(highGuess)
                 sorted(lowGuess)
@@ -77,51 +81,56 @@ while choice == "yes":
             print("\nYou are on guess",i,"out of",str(guesses)+"!")
             guess = int(input("Enter your guess: "))
 
-            #special response to devil numbers
+            # special response to devil numbers
 
             if guess == 666 or guess == 616:
                 print(Fore.RED + Style.BRIGHT + "\nYou tread on paths you don't understand, mortal.")
                 choice = "no"
                 break
 
-            #win conditions + responses
+            # win conditions + responses
 
             if guess == target and i == 1:
-                print(Fore.YELLOW + "\nAgainst all odds, you won first try!" + Style.RESET_ALL)
+                styleString(Fore.YELLOW, "\nAgainst all odds, you won first try!")
                 choice = input("\nDo you want to play again?")
                 if "yes" in choice.lower():
-                    print(Fore.BLUE + Style.BRIGHT + "="*cols + Style.RESET_ALL)
+                    styleString(Fore.BLUE + Style.BRIGHT, "="*cols)
                     continue
                 else:
                     break
             elif guess == target:
-                print(Fore.YELLOW + "\nYou guessed the target number!" + Style.RESET_ALL)
+                styleString(Fore.YELLOW, "\nYou guessed the target number!")
                 choice = input("\nDo you want to play again? ")
                 if "yes" in choice.lower():
-                    print(Fore.BLUE + Style.BRIGHT + "="*cols + Style.RESET_ALL)
+                    styleString(Fore.BLUE + Style.BRIGHT, "="*cols)
                     continue
                 else:
                     break
 
-            #guessing higher or lower than target
+            # guessing higher or lower than target
 
             elif guess > target:
                 print("\nYou guessed higher than the target number!")
                 highGuess.append(guess)
-                print(Fore.BLUE + Style.BRIGHT + "="*cols + Style.RESET_ALL)
+                styleString(Fore.BLUE + Style.BRIGHT, "="*cols)
             else:
                 print("\nYou guessed lower than the target number!")
                 lowGuess.append(guess)
-                print(Fore.BLUE + Style.BRIGHT + "="*cols + Style.RESET_ALL)
+                styleString(Fore.BLUE + Style.BRIGHT, "="*cols)
     else:
         break
 
-#end statements depending on actions
+# end statements depending on actions
 
-if guess == 666 or guess == 616:
+styleString(Fore.BLUE + Style.BRIGHT, "="*cols)
+if guesses <= 0:
+    print("You need to guess at least once!")
+elif minRange == maxRange:
+    print("Silly goose, you need a bigger range!")
+elif guess == 666 or guess == 616:
     time.sleep(2)
-    print("You lose." + Style.RESET_ALL)
+    styleString(Fore.RED + Style.BRIGHT, "You lose.")
 elif played == 1:
-    print("\nThanks for playing!")
+    print("Thanks for playing!")
 else:
-    print("\nSeems this game wasn't for you. Sorry!")
+    print("Seems this game wasn't for you. Sorry!")
