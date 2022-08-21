@@ -3,8 +3,8 @@ from colorama import Fore, Style
 
 # making style function
 
-def styleString(style, str):
-    print(style + str + Style.RESET_ALL)
+def styleString(style, *strings):
+    print(style + " ".join(strings) + Style.RESET_ALL)
 
 # initializing variables
 
