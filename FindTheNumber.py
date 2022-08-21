@@ -71,7 +71,7 @@ while choice == "yes":
         for i in range(1,guesses+1):
             GuessCount = GuessCount + 1
             if i == 1 and not "yes" in choice2.lower():
-                styleString(Fore.YELLOW, "You've entered a range of",minRange,"to",str(maxRange) + "!")
+                styleString(Fore.YELLOW, f"You've entered a range of {minRange} to {maxRange}!")
             elif i == 1 and "yes" in choice2.lower():
                 styleString(Fore.YELLOW + "You've chosen a range of",str(minRange),"to",str(maxRange) + "!")
             else:
@@ -81,7 +81,7 @@ while choice == "yes":
                 sorted(lowGuess)
                 print("\nThese are your high guesses:",highGuess)
                 print("These are your low guesses:",lowGuess)
-            print("\nYou are on guess",i,"out of",str(guesses)+"!")
+            print(f"\nYou are on guess {i} out of {guesses}!")  
             guess = int(input("Enter your guess: "))
 
             # special response to devil numbers
