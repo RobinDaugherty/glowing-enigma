@@ -73,9 +73,9 @@ while choice == "yes":
             if i == 1 and not "yes" in choice2.lower():
                 styleString(Fore.YELLOW, "You've entered a range of",minRange,"to",str(maxRange) + "!")
             elif i == 1 and "yes" in choice2.lower():
-                styleString(Fore.YELLOW + "You've chosen a range of",minRange,"to",str(maxRange) + "!")
+                styleString(Fore.YELLOW + "You've chosen a range of",str(minRange),"to",str(maxRange) + "!")
             else:
-                styleString(Fore.YELLOW + "The range is",minRange,"to",str(maxRange) + "!")
+                styleString(Fore.YELLOW + "The range is",str(minRange),"to",str(maxRange) + "!")
             if i > 1 and gameMode == "easy":
                 sorted(highGuess)
                 sorted(lowGuess)
